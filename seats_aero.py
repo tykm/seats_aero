@@ -1,18 +1,23 @@
 import requests
 import json
+import helpers
 
 url = "https://seats.aero/api/availability"
-sources = ["lifemiles", "delta", "virginatlantic"]
 all_data = []
+
+# Customize parameters
+sources = ["lifemiles", "delta", "virginatlantic"]
+destinations = {"EWR", "JFK", "LGA"}
 
 for source in sources:
     params = {"source": source}
     response = requests.get(url, params)
     if response.status_code == 200:
+        print(f"AVAILABILITY RECEIVED: {source}")
         data = response.json()
-        formatted_data = json.dumps(data, indent=4)  # Indent for better readability
+        # Filter data according to custom parameters
+        data = helpers.filterDestination(data, destinations)
         all_data.append(data)
-        print(f"Data received from {source}")
     else:
         print(f"Request failed with status code: {response.status_code}")
 
