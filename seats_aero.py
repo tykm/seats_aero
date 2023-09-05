@@ -7,7 +7,8 @@ all_data = []
 
 # Customize parameters
 sources = ["lifemiles", "delta", "virginatlantic"]
-destinations = {"EWR", "JFK", "LGA"}
+origins = {"EWR", "JFK", "LGA"}
+destinations = {"LAX", "YVR"}
 
 for source in sources:
     params = {"source": source}
@@ -16,7 +17,7 @@ for source in sources:
         print(f"AVAILABILITY RECEIVED: {source}")
         data = response.json()
         # Filter data according to custom parameters
-        data = helpers.filterDestination(data, destinations)
+        data = helpers.filter(data, origins=origins, destinations=destinations)
         all_data.append(data)
     else:
         print(f"Request failed with status code: {response.status_code}")
